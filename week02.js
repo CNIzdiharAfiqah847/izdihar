@@ -1,26 +1,19 @@
-const { MongoClient, ServerApiVersion, FindCursor } = require('mongodb');
-const uri = "mongodb+srv://m001-student:m001-mongodb-basics@cluster0.ohe8k.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-client.connect(err => {
-//const collection = client.db("test").collection("devices");
-// perform actions on the collection object
-//client.close();
-if (err){
-  console.log(err.message)
-  return
-}
-console.log("Connected to mongodb");
+const bcrypt = require("bcryptjs")
 
-//client.db().admin().listDatabases().then(result =>{
-//  console.log(result['databases'][6]);
-//})
+const password = "mypass123"
+const saltRounds = 10
 
-//client.db('sample_training').listCollections().toArray().then(result=>{
-//  console.log(result);
-//})
-
-client.db('sample_training').collection('posts').find({'title':'Bill of Rights'}).toArray().then(result=>{
-  console.log(result);
+bcrypt.genSalt(saltRounds, function (saltError, salt) {
+  if (saltError) {
+    throw saltError
+  } else {
+    bcrypt.hash(password, salt, function(hashError, hash) {
+      if (hashError) {
+        throw hashError
+      } else {
+        console.log(hash)
+        //$2a$10$FEBywZh8u9M0Cec/0mWep.1kXrwKeiWDba6tdKvDfEBjyePJnDT7K
+      }
+    })
+  }
 })
-
-});
